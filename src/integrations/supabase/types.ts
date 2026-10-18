@@ -14,16 +14,220 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      plans: {
+        Row: {
+          created_at: string
+          features: Json
+          id: string
+          infinitepay_url: string | null
+          is_active: boolean
+          mercadopago_url: string | null
+          name: string
+          price_label: string | null
+          sort_order: number
+          tagline: string | null
+        }
+        Insert: {
+          created_at?: string
+          features?: Json
+          id?: string
+          infinitepay_url?: string | null
+          is_active?: boolean
+          mercadopago_url?: string | null
+          name: string
+          price_label?: string | null
+          sort_order?: number
+          tagline?: string | null
+        }
+        Update: {
+          created_at?: string
+          features?: Json
+          id?: string
+          infinitepay_url?: string | null
+          is_active?: boolean
+          mercadopago_url?: string | null
+          name?: string
+          price_label?: string | null
+          sort_order?: number
+          tagline?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      purchases: {
+        Row: {
+          created_at: string
+          id: string
+          provider: string
+          status: string
+          user_id: string
+          video_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          provider?: string
+          status?: string
+          user_id: string
+          video_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          provider?: string
+          status?: string
+          user_id?: string
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          plan_id: string | null
+          provider: string
+          started_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          plan_id?: string | null
+          provider?: string
+          started_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          plan_id?: string | null
+          provider?: string
+          started_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      videos: {
+        Row: {
+          access_type: string
+          created_at: string
+          description: string | null
+          id: string
+          is_published: boolean
+          price_label: string | null
+          purchase_url: string | null
+          sort_order: number
+          thumbnail_url: string | null
+          title: string
+          video_url: string | null
+        }
+        Insert: {
+          access_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          price_label?: string | null
+          purchase_url?: string | null
+          sort_order?: number
+          thumbnail_url?: string | null
+          title: string
+          video_url?: string | null
+        }
+        Update: {
+          access_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          price_label?: string | null
+          purchase_url?: string | null
+          sort_order?: number
+          thumbnail_url?: string | null
+          title?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +354,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

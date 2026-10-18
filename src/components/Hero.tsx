@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Volume2, VolumeX, Menu, X } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export function Hero() {
   const [isMuted, setIsMuted] = useState(true)
@@ -169,6 +170,12 @@ export function Hero() {
               >
                 Contact
               </a>
+              <Link 
+                to="/entrar" 
+                className="text-white hover:text-white/80 font-medium gentle-animation hover:scale-105"
+              >
+                Entrar
+              </Link>
             </div>
 
             {/* Right Side - Video Controls + CTA + Mobile Menu */}
@@ -285,6 +292,13 @@ export function Hero() {
               >
                 Contact
               </a>
+              <Link 
+                to="/entrar" 
+                className="mobile-menu-link px-4 py-3 hover:text-white/80 hover:bg-white/10 rounded-lg gentle-animation font-medium text-lg active:bg-white/20"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Entrar
+              </Link>
             </div>
 
             {/* Mobile CTA Button */}
