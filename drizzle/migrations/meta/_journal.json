@@ -15,6 +15,13 @@
       "when": 1792354483380,
       "tag": "0001_profiles_email",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792354524425,
+      "tag": "0002_admin_manage_access",
+      "breakpoints": true
     }
   ]
 }
