@@ -1,3 +1,6 @@
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { AuthProvider } from './context/AuthContext'
 import { Hero } from './components/Hero'
 import { Portfolio } from './components/Portfolio'
 import { Awards } from './components/Awards'
@@ -6,8 +9,11 @@ import { Services } from './components/Services'
 import { Team } from './components/Team'
 import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
+import Auth from './pages/Auth'
+import Members from './pages/Members'
+import Admin from './pages/Admin'
 
-export default function App() {
+function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground" style={{ overflow: 'visible' }}>
       <main className="relative" role="main" style={{ overflow: 'visible' }}>
@@ -35,5 +41,29 @@ export default function App() {
       </main>
       <Footer />
     </div>
+  )
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/entrar" element={<Auth />} />
+          <Route path="/membros" element={<Members />} />
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
