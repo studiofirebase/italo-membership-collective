@@ -8,6 +8,13 @@
       "when": 1792354438992,
       "tag": "0000_membership_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792354483380,
+      "tag": "0001_profiles_email",
+      "breakpoints": true
     }
   ]
 }
