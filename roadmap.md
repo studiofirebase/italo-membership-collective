@@ -1,5 +1,11 @@
 # Roadmap
 
+## Confirmação automática Mercado Pago
+- [ ] Criar checkout vinculado ao membro e webhook com assinatura verificada
+- [ ] Confirmar cobranças, renovações e cancelamentos com segurança e sem duplicações
+- [ ] Atualizar acesso na área de membros automaticamente e testar regras
+- [ ] Configurar credenciais e notificações do Mercado Pago (aguarda dados do usuário)
+
 ## Sistema de cadastro + assinaturas (pronto — aguardando dados do usuário)
 - [x] Ativar Lovable Cloud (banco de dados + login)
 - [x] Definir abordagem: InfinitePay (link principal) + Mercado Pago (alternativo), 1 plano de assinatura + vídeos avulsos, conteúdo exclusivo, painel administrativo
