@@ -14,6 +14,70 @@ export type Database = {
   }
   public: {
     Tables: {
+      mercadopago_charges: {
+        Row: {
+          approved_at: string | null
+          paid_until: string | null
+          provider_payment_id: string
+          status: string
+          subscription_id: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          paid_until?: string | null
+          provider_payment_id: string
+          status: string
+          subscription_id: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          paid_until?: string | null
+          provider_payment_id?: string
+          status?: string
+          subscription_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mercadopago_charges_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mercadopago_checkouts: {
+        Row: {
+          checkout_url: string | null
+          created_at: string
+          provider_plan_id: string
+          subscription_id: string
+        }
+        Insert: {
+          checkout_url?: string | null
+          created_at?: string
+          provider_plan_id: string
+          subscription_id: string
+        }
+        Update: {
+          checkout_url?: string | null
+          created_at?: string
+          provider_plan_id?: string
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mercadopago_checkouts_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: true
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       plans: {
         Row: {
           created_at: string
@@ -119,6 +183,7 @@ export type Database = {
           id: string
           plan_id: string | null
           provider: string
+          provider_subscription_id: string | null
           started_at: string | null
           status: string
           user_id: string
@@ -129,6 +194,7 @@ export type Database = {
           id?: string
           plan_id?: string | null
           provider?: string
+          provider_subscription_id?: string | null
           started_at?: string | null
           status?: string
           user_id: string
@@ -139,6 +205,7 @@ export type Database = {
           id?: string
           plan_id?: string | null
           provider?: string
+          provider_subscription_id?: string | null
           started_at?: string | null
           status?: string
           user_id?: string
@@ -218,6 +285,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_mercadopago_charge: {
+        Args: {
+          p_approved_at: string
+          p_paid_until: string
+          p_payment_id: string
+          p_provider_subscription_id: string
+          p_status: string
+          p_subscription_id: string
+        }
+        Returns: undefined
+      }
+      get_member_videos: {
+        Args: never
+        Returns: {
+          access_type: string
+          created_at: string
+          description: string | null
+          id: string
+          is_published: boolean
+          price_label: string | null
+          purchase_url: string | null
+          sort_order: number
+          thumbnail_url: string | null
+          title: string
+          video_url: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "videos"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
