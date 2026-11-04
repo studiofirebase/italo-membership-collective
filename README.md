@@ -1,5 +1,38 @@
 # Italo Santos
 
+## Backend: Cloudflare (Workers + D1 + R2)
+
+O backend roda em um único Worker (`worker/`) que também serve o front-end (`dist/`). Dados no D1 (`migrations/`), vídeos/capas no R2, login próprio (PBKDF2 + cookie JWT HttpOnly). O primeiro admin é definido por `ADMIN_EMAILS` em `wrangler.jsonc`. Novos admins são promovidos por um admin no painel (`/admin`, aba Admins) a partir de uma conta já cadastrada — cada pessoa entra com o próprio e-mail e senha. As contas antigas do Supabase não foram migradas: os usuários precisam se cadastrar de novo.
+
+Desenvolvimento local:
+
+```bash
+echo 'JWT_SECRET=troque-por-um-segredo-longo' > .dev.vars
+npm run db:migrate && npm run cf:dev   # http://localhost:8799 (API; o front fica em 3000 com `npm run dev`)
+```
+
+Deploy (o R2 é opcional: sem ele, vídeos usam URL externa; para uploads ative o R2 e descomente `r2_buckets` em wrangler.jsonc) (requer `wrangler login` ou `CLOUDFLARE_API_TOKEN`):
+
+```bash
+npx wrangler d1 create italo-membership      # copie o database_id para wrangler.jsonc
+npx wrangler r2 bucket create italo-membership-media
+npx wrangler secret put JWT_SECRET
+npx wrangler secret put MEMBERSHIP_TWITTER_BEARER_TOKEN
+npm run db:migrate:remote && npm run cf:deploy
+```
+
+Configure o webhook da InfinitePay para `https://<seu-dominio>/api/infinitepay-webhook`. As seções abaixo sobre Supabase/Edge Functions são históricas.
+
+Testes E2E (Playwright, Chromium headless):
+
+```bash
+npm run db:migrate   # D1 local (uma vez)
+npm run test:e2e      # sobe `wrangler dev` sozinho e roda tests/e2e
+# Contra outra base (só smoke + fallback do X; o teste de /membros exige seed local e é pulado):
+PLAYWRIGHT_BASE_URL=https://italosantos.com npm run test:e2e
+```
+
+
 создай пустой проект с такими стилями @import url('https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap');
 
 @custom-variant dark (&:is(.dark *));
@@ -579,3 +612,37 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+For an isolated local admin-panel preview, run `npm run dev` and open `http://localhost:3000/entrar`. When the ignored `.env.admin-test.local` contains the test credentials, local development accepts `pix@italosantos.com` with password `123456`. This mode is restricted to Vite development on localhost, uses fictional in-memory panel data, and does not read or write Supabase. Never reuse these credentials for a deployed administrator account.
+
+The home-page **Assinar** action opens a floating modal with selectable Google Pay, Apple Pay, and Pix options for signed-in members. Selecting Pix displays a QR code for the generated InfinitePay checkout URL; scanning it opens InfinitePay, where the payer completes the Pix payment. It is a checkout-link QR, not a direct Pix BR Code. New subscriptions created through generated links are activated automatically after backend verification; old/static links still require manual activation. Selecting Apple Pay or Google Pay and continuing opens the official checkout page. InfinitePay controls which methods are available for the account, browser, and device. Visitors sign in or create an account first, then return to the home page and open the payment options after authentication or email confirmation. Mercado Pago is not offered for new payments; historical records remain visible in the admin panel.
+
+### X media feed on the homepage
+
+The homepage hero and media catalog share the `twitter-feed` Edge Function and display photos or videos only from the configured account. Set `TWITTER_USERNAME` (without the `@`) and `TWITTER_BEARER_TOKEN` as Edge Function secrets in the Supabase project. The bearer token is only read by the Edge Function and must not use a `VITE_` prefix.
+
+Deploy the function after setting those secrets:
+
+```sh
+supabase functions deploy twitter-feed --project-ref ipgwnkcfarrzglepqufx
+```
+
+For local homepage development, `npm run dev` serves `/api/twitter-feed` from the Vite server at `http://localhost:3000`. It reads `TWITTER_USERNAME` from the local environment (default: `severepics`) and parses the official public X timeline server-side, so the browser does not need the X widget or a bearer token. Only media attached to posts authored by that account is displayed; quoted posts and other accounts' media are excluded. X may rate-limit the public timeline, in which case the page reports the error and does not show demo media.
+
+For local Edge Function development instead, run `supabase functions serve twitter-feed --env-file .env`. The public function has JWT verification disabled because the feed contains only public X posts; the X bearer token remains server-side. If the X API connection fails or the account has no recent posts with media, the page shows an error or empty state instead of unrelated or sample media.
+
+### InfinitePay checkout
+
+Membership subscriptions are created through the official InfinitePay Checkout API (`POST https://api.checkout.infinitepay.io/links`) by the authenticated `infinitepay-checkout` Supabase Edge Function. The function reads the first active plan, converts its `price_label` (for example, `R$ 29,90/mês`) to cents, and extracts the InfinitePay handle from that plan's checkout URL or the default `https://checkout.infinitepay.io/italosevere/WKqeO7qiL8`. It sends the signed-in customer's profile name and account email, plus the phone saved in account metadata or collected in the app, so InfinitePay can prefill these checkout fields instead of asking again. No customer details are fabricated; users without saved details provide them in the app before checkout. The plan must have a valid price label and a standard `checkout.infinitepay.io/<handle>/...` URL (or use the default).
+
+Apply the migration and deploy both functions:
+
+```sh
+supabase db push --project-ref ipgwnkcfarrzglepqufx
+supabase functions deploy infinitepay-checkout --project-ref ipgwnkcfarrzglepqufx
+supabase functions deploy infinitepay-webhook --project-ref ipgwnkcfarrzglepqufx
+```
+
+The link includes the `infinitepay-webhook` URL. The webhook does not trust the callback alone: it looks up the server-created order binding, asks InfinitePay `POST /payment_check` to verify its handle, order, transaction, and invoice, checks the amount, and then atomically marks that exact pending subscription active. Duplicate notifications are idempotent. The webhook is public (InfinitePay does not document a signature for this callback) and uses the provider's payment-check response as the authoritative confirmation. Supabase supplies `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` to Edge Functions; never put the service-role key in the browser. If provider verification or database processing fails, the webhook responds `400` so InfinitePay can retry the notification.
+
+The Pix option displays a QR code containing the generated checkout URL; scanning it opens the hosted InfinitePay checkout, where Pix can be selected if enabled. It is not a direct Pix BR Code. Payment methods including Pix, Apple Pay, and Google Pay depend on InfinitePay account/browser/device support. After applying the migration and deploying both functions, payments from newly generated links activate subscriptions automatically; older/static links without an order binding remain manual.

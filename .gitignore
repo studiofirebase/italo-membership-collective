@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.dev.vars
+.wrangler
+test-results
+playwright-report
+blob-report
+tests/e2e/.admin.json

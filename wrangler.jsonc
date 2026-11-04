@@ -1,0 +1,33 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "italo-membership",
+  "routes": [
+    { "pattern": "italosantos.com/*", "zone_name": "italosantos.com" },
+    { "pattern": "www.italosantos.com/*", "zone_name": "italosantos.com" }
+  ],
+  "dev": { "port": 8799 },
+  "main": "worker/index.ts",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "italo-membership",
+      "database_id": "19dfc41c-2bb8-419e-9aab-04d7ed796eeb",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "italosantos" }],
+  "vars": {
+    "ADMIN_EMAILS": "pix@italosantos.com",
+    "X_FEED_FALLBACK_URL": "https://ipgwnkcfarrzglepqufx.supabase.co/functions/v1/twitter-feed",
+    "MEMBERSHIP_TWITTER_USERNAME": "severepics"
+  },
+  "observability": { "enabled": true }
+}

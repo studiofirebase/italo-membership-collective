@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        bagel: ['Bagel Fat One', 'cursive'],
+        bagel: ['Caviar Dreams', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       colors: {
         border: "var(--border)",

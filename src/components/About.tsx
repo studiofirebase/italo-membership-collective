@@ -10,33 +10,38 @@ export function About() {
   const processSteps = [
     {
       number: "01",
-      title: "Concept & Script",
-      description: "Scene‑by‑scene draft with dialogues and time‑codes",
-      color: "accent-blue"
+      title: "Conceito e roteiro",
+      description: "Rascunho cena por cena com diálogos e marcas de tempo",
+      color: "accent-blue",
+      image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=80'
     },
     {
-      number: "02", 
-      title: "Look & Storyboard",
-      description: "AI engine selection and visual testing",
-      color: "accent-emerald"
+      number: "02",
+      title: "Visual e storyboard",
+      description: "Seleção do motor de IA e testes visuais",
+      color: "accent-emerald",
+      image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80'
     },
     {
       number: "03",
-      title: "AI Production",
-      description: "Motion tests and multi-variant generation",
-      color: "accent-purple"
+      title: "Produção com IA",
+      description: "Testes de movimento e geração em múltiplas variações",
+      color: "accent-purple",
+      image: 'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=900&q=80'
     },
     {
       number: "04",
-      title: "Post‑production",
-      description: "VFX, color grading, and audio mixing",
-      color: "accent-blue"
+      title: "Pós-produção",
+      description: "VFX, color grading e mixagem de áudio",
+      color: "accent-blue",
+      image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80'
     },
     {
       number: "05",
-      title: "Master Delivery",
-      description: "Multi-format export and secure transfer",
-      color: "accent-purple"
+      title: "Entrega final",
+      description: "Exportação em múltiplos formatos e envio seguro",
+      color: "accent-purple",
+      image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80'
     }
   ]
 
@@ -75,17 +80,17 @@ export function About() {
           <div className="inline-flex items-center gap-3 mb-6">
             <div className="w-3 h-3 bg-accent-emerald rounded-full animate-pulse" />
             <span className="text-sm font-semibold text-muted-foreground">
-              Behind the Scenes
+              Por trás das câmeras
             </span>
             <div className="w-3 h-3 bg-accent-blue rounded-full animate-pulse" />
           </div>
-          
+
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-6 text-foreground">
-            How We Create Magic
+            Como criamos a magia
           </h2>
-          
+
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Watch our process unfold frame by frame
+            Assista ao nosso processo se desenrolar quadro a quadro
           </p>
         </div>
 
@@ -142,7 +147,7 @@ export function About() {
                 {/* Start frame */}
                 <div className="flex-shrink-0 w-80 h-52 bg-gray-800 rounded-lg border-2 border-gray-700 opacity-60 flex items-center justify-center" 
                      style={{ boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)' }}>
-                  <div className="text-gray-400 font-mono tracking-wider">● START</div>
+                  <div className="text-gray-400 font-mono tracking-wider">● INÍCIO</div>
                 </div>
                 
                 {/* Process Step Frames */}
@@ -158,31 +163,28 @@ export function About() {
                       boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)'
                     }}
                   >
-                    
-                    {/* Frame Content */}
-                    <div className="relative h-full p-6 flex flex-col justify-between">
-                      
-                      {/* Frame Number Badge */}
+                    <div className="relative h-full overflow-hidden rounded-md">
+                      <img
+                        src={step.image}
+                        alt={step.title}
+                        className="h-full w-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
                       <div className="absolute -top-4 -left-4 w-12 h-12 bg-foreground text-background rounded-full flex items-center justify-center font-black z-10 border-3 border-white text-lg"
                            style={{ boxShadow: '0 6px 12px rgba(0,0,0,0.4)' }}>
                         {step.number}
                       </div>
-                      
-                      {/* Content */}
-                      <div className="opacity-100">
-                        
-                        {/* Step Title */}
-                        <h3 className="font-black text-xl leading-tight mb-4 text-foreground">
+
+                      <div className="absolute inset-x-0 bottom-0 p-4 text-left">
+                        <h3 className="font-black text-xl leading-tight mb-1 text-white">
                           {step.title}
                         </h3>
-                        
-                        {/* Step Description */}
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-xs text-white/80 leading-relaxed">
                           {step.description}
                         </p>
                       </div>
-                      
-                      {/* Film frame edge lines */}
+
                       <div className="absolute left-1 top-1 bottom-1 w-px bg-gray-300/20" />
                       <div className="absolute right-1 top-1 bottom-1 w-px bg-gray-300/20" />
                       <div className="absolute top-1 left-1 right-1 h-px bg-gray-300/20" />
@@ -194,14 +196,14 @@ export function About() {
                 {/* End frame */}
                 <div className="flex-shrink-0 w-80 h-52 bg-gray-800 rounded-lg border-2 border-gray-700 opacity-60 flex items-center justify-center"
                      style={{ boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)' }}>
-                  <div className="text-gray-400 font-mono tracking-wider">● END</div>
+                  <div className="text-gray-400 font-mono tracking-wider">● FIM</div>
                 </div>
                 
                 {/* Duplicate set for seamless loop */}
                 {/* Start frame duplicate */}
                 <div className="flex-shrink-0 w-80 h-52 bg-gray-800 rounded-lg border-2 border-gray-700 opacity-60 flex items-center justify-center" 
                      style={{ boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)' }}>
-                  <div className="text-gray-400 font-mono tracking-wider">● START</div>
+                  <div className="text-gray-400 font-mono tracking-wider">● INÍCIO</div>
                 </div>
                 
                 {/* Process Step Frames duplicate */}
@@ -217,31 +219,28 @@ export function About() {
                       boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)'
                     }}
                   >
-                    
-                    {/* Frame Content */}
-                    <div className="relative h-full p-6 flex flex-col justify-between">
-                      
-                      {/* Frame Number Badge */}
+                    <div className="relative h-full overflow-hidden rounded-md">
+                      <img
+                        src={step.image}
+                        alt={step.title}
+                        className="h-full w-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
                       <div className="absolute -top-4 -left-4 w-12 h-12 bg-foreground text-background rounded-full flex items-center justify-center font-black z-10 border-3 border-white text-lg"
                            style={{ boxShadow: '0 6px 12px rgba(0,0,0,0.4)' }}>
                         {step.number}
                       </div>
-                      
-                      {/* Content */}
-                      <div className="opacity-100">
-                        
-                        {/* Step Title */}
-                        <h3 className="font-black text-xl leading-tight mb-4 text-foreground">
+
+                      <div className="absolute inset-x-0 bottom-0 p-4 text-left">
+                        <h3 className="font-black text-xl leading-tight mb-1 text-white">
                           {step.title}
                         </h3>
-                        
-                        {/* Step Description */}
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-xs text-white/80 leading-relaxed">
                           {step.description}
                         </p>
                       </div>
-                      
-                      {/* Film frame edge lines */}
+
                       <div className="absolute left-1 top-1 bottom-1 w-px bg-gray-300/20" />
                       <div className="absolute right-1 top-1 bottom-1 w-px bg-gray-300/20" />
                       <div className="absolute top-1 left-1 right-1 h-px bg-gray-300/20" />

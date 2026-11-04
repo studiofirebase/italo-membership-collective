@@ -11,8 +11,8 @@ const AnimationShowcase = () => {
             style={{ backgroundColor: 'var(--accent-blue)' }}
           ></div>
         </div>
-        <h3 className="text-xl font-semibold text-center mb-2">Float Gentle</h3>
-        <p className="text-muted-foreground text-center">Плавное покачивание вверх-вниз</p>
+        <h3 className="text-xl font-semibold text-center mb-2">Flutuação suave</h3>
+        <p className="text-muted-foreground text-center">Oscilação suave para cima e para baixo</p>
       </Card>
 
       {/* Drift Left */}
@@ -23,8 +23,8 @@ const AnimationShowcase = () => {
             style={{ backgroundColor: 'var(--accent-emerald)' }}
           ></div>
         </div>
-        <h3 className="text-xl font-semibold text-center mb-2">Drift Left</h3>
-        <p className="text-muted-foreground text-center">Медленное движение влево-вправо</p>
+        <h3 className="text-xl font-semibold text-center mb-2">Deslocamento à esquerda</h3>
+        <p className="text-muted-foreground text-center">Movimento lento para a esquerda e direita</p>
       </Card>
 
       {/* Drift Right */}
@@ -35,8 +35,8 @@ const AnimationShowcase = () => {
             style={{ backgroundColor: 'var(--accent-purple)' }}
           ></div>
         </div>
-        <h3 className="text-xl font-semibold text-center mb-2">Drift Right</h3>
-        <p className="text-muted-foreground text-center">Плавное колебание вправо-влево</p>
+        <h3 className="text-xl font-semibold text-center mb-2">Deslocamento à direita</h3>
+        <p className="text-muted-foreground text-center">Oscilação suave da direita para a esquerda</p>
       </Card>
 
       {/* Photo Sway 1 */}
@@ -47,8 +47,8 @@ const AnimationShowcase = () => {
             style={{ backgroundColor: 'var(--accent-blue)' }}
           ></div>
         </div>
-        <h3 className="text-xl font-semibold text-center mb-2">Photo Sway</h3>
-        <p className="text-muted-foreground text-center">Имитация покачивания фото</p>
+        <h3 className="text-xl font-semibold text-center mb-2">Oscilação da foto</h3>
+        <p className="text-muted-foreground text-center">Imitação de movimento suave da foto</p>
       </Card>
 
       {/* Pulse Glow */}
@@ -59,8 +59,8 @@ const AnimationShowcase = () => {
             style={{ backgroundColor: 'var(--accent-emerald)' }}
           ></div>
         </div>
-        <h3 className="text-xl font-semibold text-center mb-2">Pulse Glow</h3>
-        <p className="text-muted-foreground text-center">Пульсирующее свечение</p>
+        <h3 className="text-xl font-semibold text-center mb-2">Brilho pulsante</h3>
+        <p className="text-muted-foreground text-center">Brilho pulsante</p>
       </Card>
 
       {/* Gentle Animation */}
@@ -69,8 +69,8 @@ const AnimationShowcase = () => {
           className="w-16 h-16 rounded-lg mx-auto mb-4"
           style={{ backgroundColor: 'var(--accent-purple)' }}
         ></div>
-        <h3 className="text-xl font-semibold text-center mb-2">Gentle Hover</h3>
-        <p className="text-muted-foreground text-center">Плавный переход при наведении</p>
+        <h3 className="text-xl font-semibold text-center mb-2">Hover suave</h3>
+        <p className="text-muted-foreground text-center">Transição suave ao passar o mouse</p>
       </Card>
     </div>
   );
